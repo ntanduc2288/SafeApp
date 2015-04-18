@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.viewnine.safeapp.activity.LockScreenAppActivity;
+import com.viewnine.safeapp.ulti.Ulti;
 
 
 public class lockScreenReceiver extends BroadcastReceiver {
@@ -18,10 +19,9 @@ public class lockScreenReceiver extends BroadcastReceiver {
             //Toast.makeText(context, "" + "screeen off", Toast.LENGTH_SHORT).show();
 
             wasScreenOn = false;
-            Intent intent11 = new Intent(context, LockScreenAppActivity.class);
-            intent11.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            context.startActivity(intent11);
+           openLockScreen(context);
+
 
             // do whatever you need to do here
             //wasScreenOn = false;
@@ -53,6 +53,15 @@ public class lockScreenReceiver extends BroadcastReceiver {
             //  Log.v("TEST", "Service loaded at start");
         }
 
+    }
+
+    private void openLockScreen(Context context){
+        if(!Ulti.isAppOnTop(context)){
+            Intent intent11 = new Intent(context, LockScreenAppActivity.class);
+            intent11.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            context.startActivity(intent11);
+        }
     }
 
 

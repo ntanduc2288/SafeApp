@@ -10,4 +10,8 @@
     <string name="secondary_email">Secondary Email</string>
     <string name="please_enter_primary_email">Please enter primary email</string>
     <string name="please_enter_secondary_email">Please enter secondary email</string>
+    <string name="OK">ok</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="videos">VIDEOS</string>
+    <string name="video">VIDEO</string>
 </resources>

@@ -2,27 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/White"
+
     android:layout_height="match_parent"
     tools:context=".SetupActivity">
 
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/title_safeapp_height"
-        android:background="@color/safeapp_color"
-        android:text="@string/set_up"
-        android:textColor="@color/White"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textSize="@dimen/title_safeapp_text_size"
-        android:id="@+id/title" />
+
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/scrollview_setup"
-        android:layout_below="@+id/title"
+
         android:layout_above="@+id/next">
 
         <LinearLayout

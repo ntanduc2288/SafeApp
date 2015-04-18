@@ -2,10 +2,12 @@ package com.viewnine.safeapp.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
+import com.viewnine.safeapp.manager.SwitchViewManager;
+import com.viewnine.safeapp.ulti.ValidationHelper;
 
 /**
  * Created by user on 4/18/15.
@@ -19,9 +21,23 @@ public class SplashScreenActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = SplashScreenActivity.this;
-        setContentView(R.layout.splashscreen_view);
 
-        handler.sendEmptyMessageDelayed(key_exit, 1000);
+        handleFirstTimeRunning();
+    }
+
+
+    private void handleFirstTimeRunning(){
+
+
+        if(!ValidationHelper.getInstance().alreadySetupEmail()){
+            setContentView(R.layout.splashscreen_view);
+            handler.sendEmptyMessageDelayed(key_exit, 1000);
+        }else {
+            SwitchViewManager.getInstance().gotoRecordForegroundVideoScreen(this);
+        }
+
+
+//        SwitchViewManager.getInstance().gotoLockScreen(this);
     }
 
     Handler handler = new Handler(new Handler.Callback() {
@@ -39,18 +55,7 @@ public class SplashScreenActivity extends Activity {
 
     private void handleGotoNextScreen() {
 
-       /* if(SharePreferenceManager.getInstance().isFirstTimeRunningApp()){
-            SharePreferenceManager.getInstance().setFirstTimeRunningApp(true);
-            Intent intent = new Intent(this, SetupActivity.class);
-            startActivity(intent);
-            finish();
-        }else {
-
-        }*/
-
-        Intent intent = new Intent(this, SetupActivity.class);
-        startActivity(intent);
-        finish();
+       SwitchViewManager.getInstance().gotoRecordSetupScreen(this);
 
     }
 

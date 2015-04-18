@@ -183,6 +183,7 @@ public class LockScreenAppActivity extends Activity {
             // initialize receiver
 
 
+
             startService(new Intent(this, MyService.class));
 
 

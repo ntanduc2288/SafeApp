@@ -2,6 +2,7 @@ package com.viewnine.safeapp.ulti;
 
 import android.app.Activity;
 import android.view.View;
+import android.view.WindowManager;
 
 /**
  * Created by user on 4/17/15.
@@ -32,5 +33,9 @@ public class ViewUlti {
 
         }
 
+    }
+
+    public static void preventKeyboardShowingAutomatically(Activity activity){
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 }

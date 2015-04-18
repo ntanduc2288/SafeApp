@@ -286,5 +286,6 @@
     <color name="sticker_market_item_bg">#F3F2F8</color>
     <color name="sticker_market_bg">#F6F5FA</color>
     <color name="background_search_topic">#5d4990</color>
+    <color name="safeapp_color">#0035d1</color>
 
 </resources>

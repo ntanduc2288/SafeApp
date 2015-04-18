@@ -1,4 +1,4 @@
-package com.viewnine.safeapp.myapp;
+package com.viewnine.safeapp.service;
 
 
 import android.app.KeyguardManager;
@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+
+import com.viewnine.safeapp.receiver.lockScreenReceiver;
 
 public class MyService extends Service{
 	 BroadcastReceiver mReceiver;
@@ -48,7 +50,7 @@ public void onCreate() {
      IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
      filter.addAction(Intent.ACTION_SCREEN_OFF);
 
-     mReceiver = new lockScreenReeiver();
+     mReceiver = new lockScreenReceiver();
      registerReceiver(mReceiver, filter);
 
 

@@ -1,11 +1,13 @@
-package com.viewnine.safeapp.myapp;
+package com.viewnine.safeapp.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.viewnine.safeapp.activity.LockScreenAppActivity;
 
-public class lockScreenReeiver extends BroadcastReceiver {
+
+public class lockScreenReceiver extends BroadcastReceiver {
     public static boolean wasScreenOn = true;
 
     @Override

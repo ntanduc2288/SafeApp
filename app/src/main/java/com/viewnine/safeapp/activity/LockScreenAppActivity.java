@@ -1,4 +1,4 @@
-package com.viewnine.safeapp.myapp;
+package com.viewnine.safeapp.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.viewnine.safeapp.glowpad.GlowPadView;
-import com.viewnine.safeapp.myapp.MyService;
+import com.viewnine.safeapp.service.MyService;
 import com.viewnine.safeapp.ulti.ViewUlti;
 
 import java.text.SimpleDateFormat;
@@ -26,48 +26,46 @@ import java.util.Calendar;
 public class LockScreenAppActivity extends Activity {
 
 
-
     private GlowPadView glowPadView;
     private TextView lblTime, lblDate;
     private Calendar calendar;
     SimpleDateFormat sdf;
 
     @Override
-	 public void onAttachedToWindow() {
-		// TODO Auto-generated method stub
+    public void onAttachedToWindow() {
+        // TODO Auto-generated method stub
 //		this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG|WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-          super.onAttachedToWindow();
-	 }
-	  
+        super.onAttachedToWindow();
+    }
+
 //	  @Override 
 //		public void onAttachedToWindow() { 
 //		    super.onAttachedToWindow(); 
 //		    this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);           
 //		} 
 //		
-	
+
     public void onCreate(Bundle savedInstanceState) {
 
-    	   super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
 
-    	   getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-    	   getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-    	   getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    	   getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-                
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
-    	   setContentView(R.layout.main);
+
+        setContentView(R.layout.lockscreen_view);
 
         initLockScreen();
         initGlowPad();
         initDateTime();
 
 
-
     }
 
-    private void initGlowPad(){
+    private void initGlowPad() {
         glowPadView = (GlowPadView) findViewById(R.id.glow_pad_view);
         glowPadView.setOnTriggerListener(new GlowPadView.OnTriggerListener() {
             @Override
@@ -83,7 +81,7 @@ public class LockScreenAppActivity extends Activity {
             @Override
             public void onTrigger(View v, int target) {
                 Toast.makeText(LockScreenAppActivity.this, "Clicked on position: " + target, Toast.LENGTH_SHORT).show();
-                switch (target){
+                switch (target) {
                     case 0:
                         turnOffScreen();
                         break;
@@ -108,7 +106,6 @@ public class LockScreenAppActivity extends Activity {
     }
 
 
-
     Handler mainhandler = new Handler() {
 
         @Override
@@ -126,12 +123,12 @@ public class LockScreenAppActivity extends Activity {
             lblDate.setText(date);
 
 
-
         }
     };
-    private void initDateTime(){
-       lblTime = (TextView) findViewById(R.id.time);
-       lblDate = (TextView) findViewById(R.id.date);
+
+    private void initDateTime() {
+        lblTime = (TextView) findViewById(R.id.time);
+        lblDate = (TextView) findViewById(R.id.date);
 
         calendar = Calendar.getInstance();
         sdf = new SimpleDateFormat("hh:mm a");
@@ -141,9 +138,6 @@ public class LockScreenAppActivity extends Activity {
         sdf = new SimpleDateFormat(" EE, d  MMM yyyy");
         String date = sdf.format(calendar.getTime());
         lblDate.setText(date);
-
-
-
 
 
         new Thread(new Runnable() {
@@ -166,7 +160,7 @@ public class LockScreenAppActivity extends Activity {
         }).start();
     }
 
-    private void turnOffScreen(){
+    private void turnOffScreen() {
         PowerManager manager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 
 
@@ -176,20 +170,20 @@ public class LockScreenAppActivity extends Activity {
         wl.release();
     }
 
-    private void initLockScreen(){
+    private void initLockScreen() {
 
         ViewUlti.hideNavigationBar(this);
 
-        if(getIntent()!=null&&getIntent().hasExtra("kill")&&getIntent().getExtras().getInt("kill")==1){
+        if (getIntent() != null && getIntent().hasExtra("kill") && getIntent().getExtras().getInt("kill") == 1) {
             // Toast.makeText(this, "" + "kill activityy", Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        try{
+        try {
             // initialize receiver
 
 
-            startService(new Intent(this,MyService.class));
+            startService(new Intent(this, MyService.class));
 
 
 
@@ -198,27 +192,27 @@ public class LockScreenAppActivity extends Activity {
         k1 = km.newKeyguardLock("IN");
         k1.disableKeyguard();*/
             StateListener phoneStateListener = new StateListener();
-            TelephonyManager telephonyManager =(TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-            telephonyManager.listen(phoneStateListener,PhoneStateListener.LISTEN_CALL_STATE);
+            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             // TODO: handle exception
         }
 
     }
-    class StateListener extends PhoneStateListener{
+
+    class StateListener extends PhoneStateListener {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
 
             super.onCallStateChanged(state, incomingNumber);
-            switch(state){
+            switch (state) {
                 case TelephonyManager.CALL_STATE_RINGING:
                     break;
                 case TelephonyManager.CALL_STATE_OFFHOOK:
                     System.out.println("call Activity off hook");
-                	finish();
-
+                    finish();
 
 
                     break;
@@ -226,7 +220,9 @@ public class LockScreenAppActivity extends Activity {
                     break;
             }
         }
-    };
+    }
+
+    ;
 
 
     @Override
@@ -241,7 +237,7 @@ public class LockScreenAppActivity extends Activity {
         super.onPause();
 
         // Don't hang around.
-       // finish();
+        // finish();
     }
 
     @Override
@@ -249,11 +245,8 @@ public class LockScreenAppActivity extends Activity {
         super.onStop();
 
         // Don't hang around.
-       // finish();
+        // finish();
     }
-
-
-
 
 
 //    @Override
@@ -271,7 +264,7 @@ public class LockScreenAppActivity extends Activity {
 //	return false;
 //
 //    }
-    
+
 //	@Override 
 //	public boolean onKeyDown(int keyCode, KeyEvent event) {
 //	    if(keyCode == KeyEvent.KEYCODE_HOME)
@@ -286,30 +279,29 @@ public class LockScreenAppActivity extends Activity {
 //	} 
 
     public boolean dispatchKeyEvent(KeyEvent event) {
-    	if (event.getKeyCode() == KeyEvent.KEYCODE_POWER ||(event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)||(event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {
-    	    //Intent i = new Intent(this, NewActivity.class);
-    	    //startActivity(i);
-    	    return false;
-    	}
-    	 if((event.getKeyCode() == KeyEvent.KEYCODE_HOME)){
+        if (event.getKeyCode() == KeyEvent.KEYCODE_POWER || (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {
+            //Intent i = new Intent(this, NewActivity.class);
+            //startActivity(i);
+            return false;
+        }
+        if ((event.getKeyCode() == KeyEvent.KEYCODE_HOME)) {
 
-           System.out.println("alokkkkkkkkkkkkkkkkk");
-      	   return true;
-         }
-    return false;
+            System.out.println("alokkkkkkkkkkkkkkkkk");
+            return true;
+        }
+        return false;
     }
 
-	/*public void unloack(){
+    /*public void unloack(){
 
           finish();
 
-	}*/
-    public void onDestroy(){
-       // k1.reenableKeyguard();
+    }*/
+    public void onDestroy() {
+        // k1.reenableKeyguard();
 
         super.onDestroy();
     }
 
-    
-   
+
 }

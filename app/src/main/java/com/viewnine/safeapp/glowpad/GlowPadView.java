@@ -45,7 +45,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 
-import com.viewnine.safeapp.myapp.R;
+import com.viewnine.safeapp.activity.R;
 
 /**
  * This is a copy of com.android.internal.widget.multiwaveview.GlowPadView with

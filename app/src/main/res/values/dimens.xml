@@ -16,10 +16,16 @@
 
     <!-- Default distance from each snap target that GlowPadView considers a "hit" -->
     <dimen name="glowpadview_inner_radius">15dip</dimen>
-    <dimen name="glowpadview_margin_bottom">-64dip</dimen>
+    <dimen name="glowpadview_margin_bottom">0dp</dimen>
     <dimen name="glowpadview_margin_right">0dip</dimen>
     <dimen name="title_safeapp_height">70dp</dimen>
     <dimen name="title_safeapp_text_size">25sp</dimen>
     <dimen name="safeapp_text_size">18sp</dimen>
     <dimen name="default_padding">20dp</dimen>
+
+    <!-- Value for lock pattern -->
+    <dimen name="lock_pattern_dot_line_width">3dp</dimen>
+    <dimen name="lock_pattern_dot_size">12dp</dimen>
+    <dimen name="lock_pattern_dot_size_activated">28dp</dimen>
+    <!-- End -->
 </resources>

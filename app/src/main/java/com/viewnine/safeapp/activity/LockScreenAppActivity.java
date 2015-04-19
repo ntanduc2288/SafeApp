@@ -12,24 +12,36 @@ import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.viewnine.safeapp.glowpad.GlowPadView;
+import com.viewnine.safeapp.lockPattern.LockPatternViewEx;
 import com.viewnine.safeapp.service.MyService;
+import com.viewnine.safeapp.ulti.Constants;
+import com.viewnine.safeapp.ulti.DateHelper;
 import com.viewnine.safeapp.ulti.ViewUlti;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 
-public class LockScreenAppActivity extends Activity {
+public class LockScreenAppActivity extends Activity implements View.OnClickListener{
 
-
+    private static final int HOME_TYPE = 0;
+    private static final int VIDEO_TYPE = 1;
+    private static final int PATTERN_TYPE = 2;
     private GlowPadView glowPadView;
     private TextView lblTime, lblDate;
     private Calendar calendar;
     SimpleDateFormat sdf;
+    private RelativeLayout rlLockPattern;
+    private LockPatternViewEx lockPatternView;
+    private TextView txtWrongPattern;
+    private Button btnCancelPattern;
 
     @Override
     public void onAttachedToWindow() {
@@ -38,13 +50,6 @@ public class LockScreenAppActivity extends Activity {
 
         super.onAttachedToWindow();
     }
-
-//	  @Override 
-//		public void onAttachedToWindow() { 
-//		    super.onAttachedToWindow(); 
-//		    this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD);           
-//		} 
-//		
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -61,8 +66,44 @@ public class LockScreenAppActivity extends Activity {
         initLockScreen();
         initGlowPad();
         initDateTime();
+        initLockPattern();
 
+    }
 
+    private String previousString = Constants.EMPTY_STRING;
+    private void initLockPattern() {
+        rlLockPattern = (RelativeLayout) findViewById(R.id.relativelayout_pattern);
+        lockPatternView = (LockPatternViewEx) findViewById(R.id.lockpatternview_pattern);
+        txtWrongPattern = (TextView) findViewById(R.id.textview_wrong_pattern);
+        btnCancelPattern = (Button) findViewById(R.id.button_cancel_pattern);
+        btnCancelPattern.setOnClickListener(this);
+
+        lockPatternView.setOnPatternListener(new LockPatternViewEx.OnPatternListener() {
+            @Override
+            public void onPatternStart() {
+
+            }
+
+            @Override
+            public void onPatternCleared() {
+
+            }
+
+            @Override
+            public void onPatternCellAdded(List<LockPatternViewEx.Cell> pattern) {
+
+            }
+
+            @Override
+            public void onPatternDetected(List<LockPatternViewEx.Cell> pattern) {
+                String patternString = pattern.toString();
+                if(!previousString.equalsIgnoreCase(patternString)){
+                    previousString = patternString;
+                }
+                lockPatternView.clearPattern();
+                Toast.makeText(LockScreenAppActivity.this, "Selected", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initGlowPad() {
@@ -80,13 +121,19 @@ public class LockScreenAppActivity extends Activity {
 
             @Override
             public void onTrigger(View v, int target) {
-                Toast.makeText(LockScreenAppActivity.this, "Clicked on position: " + target, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(LockScreenAppActivity.this, "Clicked on position: " + target, Toast.LENGTH_SHORT).show();
                 switch (target) {
-                    case 0:
-                        turnOffScreen();
+                    case HOME_TYPE:
+                        finish();
+                        break;
+                    case VIDEO_TYPE:
+                        handleVideoSelected();
+                        break;
+                    case PATTERN_TYPE:
+                        handlePatternSelected();
                         break;
                     default:
-                        finish();
+//                        finish();
                         break;
 
                 }
@@ -105,6 +152,15 @@ public class LockScreenAppActivity extends Activity {
 
     }
 
+    private void setCurrentDateTime() {
+        calendar = Calendar.getInstance();
+
+        sdf = new SimpleDateFormat(DateHelper.RFC_USA_9);
+        String time = sdf.format(calendar.getTime());
+        lblTime.setText(time);
+
+        lblDate.setText(DateHelper.getDateMessageFullMonth(calendar));
+    }
 
     Handler mainhandler = new Handler() {
 
@@ -112,15 +168,7 @@ public class LockScreenAppActivity extends Activity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            calendar = Calendar.getInstance();
-
-            sdf = new SimpleDateFormat("hh:mm a");
-            String time = sdf.format(calendar.getTime());
-            lblTime.setText(time);
-
-            sdf = new SimpleDateFormat(" EE, d  MMM yyyy");
-            String date = sdf.format(calendar.getTime());
-            lblDate.setText(date);
+            setCurrentDateTime();
 
 
         }
@@ -130,15 +178,7 @@ public class LockScreenAppActivity extends Activity {
         lblTime = (TextView) findViewById(R.id.time);
         lblDate = (TextView) findViewById(R.id.date);
 
-        calendar = Calendar.getInstance();
-        sdf = new SimpleDateFormat("hh:mm a");
-        String time = sdf.format(calendar.getTime());
-        lblTime.setText(time);
-
-        sdf = new SimpleDateFormat(" EE, d  MMM yyyy");
-        String date = sdf.format(calendar.getTime());
-        lblDate.setText(date);
-
+        setCurrentDateTime();
 
         new Thread(new Runnable() {
             public void run() {
@@ -181,7 +221,6 @@ public class LockScreenAppActivity extends Activity {
 
         try {
             // initialize receiver
-
 
 
             startService(new Intent(this, MyService.class));
@@ -249,36 +288,6 @@ public class LockScreenAppActivity extends Activity {
         // finish();
     }
 
-
-//    @Override
-//  public boolean onKeyDown(int keyCode, android.view.KeyEvent event) {
-//
-//    	if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)||(keyCode == KeyEvent.KEYCODE_POWER)||(keyCode == KeyEvent.KEYCODE_VOLUME_UP)||(keyCode == KeyEvent.KEYCODE_CAMERA)) {
-//    	    //this is where I can do my stuff
-//    	    return true; //because I handled the event
-//    	}
-//       if((keyCode == KeyEvent.KEYCODE_HOME)){
-//
-//    	   return true;
-//        }
-//
-//	return false;
-//
-//    }
-
-//	@Override 
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//	    if(keyCode == KeyEvent.KEYCODE_HOME)
-//	    { 
-//	        Log.i("Home Button","Clicked");
-//	    } 
-//	    if(keyCode==KeyEvent.KEYCODE_BACK)
-//	    { 
-//	        finish();
-//	    } 
-//	    return false; 
-//	} 
-
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_POWER || (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) || (event.getKeyCode() == KeyEvent.KEYCODE_POWER)) {
             //Intent i = new Intent(this, NewActivity.class);
@@ -304,5 +313,29 @@ public class LockScreenAppActivity extends Activity {
         super.onDestroy();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.button_cancel_pattern:
+                handleCancelPattern();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void handleCancelPattern(){
+        rlLockPattern.setVisibility(View.GONE);
+        glowPadView.setVisibility(View.VISIBLE);
+    }
+
+    private void handleVideoSelected() {
+        Toast.makeText(LockScreenAppActivity.this, "Start record video", Toast.LENGTH_SHORT).show();
+    }
+
+    private void handlePatternSelected() {
+        rlLockPattern.setVisibility(View.VISIBLE);
+        glowPadView.setVisibility(View.GONE);
+    }
 
 }

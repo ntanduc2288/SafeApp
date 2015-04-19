@@ -1,9 +1,6 @@
 package com.viewnine.safeapp.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import com.viewnine.safeapp.service.MyService;
 
 /**
  * Created by user on 4/19/15.
@@ -15,7 +12,7 @@ public class RecordForegroundVideoActivity extends ParentActivity {
         super.onCreate(savedInstanceState);
         setupViews();
 
-        startService(new Intent(this, MyService.class));
+//        startService(new Intent(this, MyService.class));
     }
 
     private void setupViews() {

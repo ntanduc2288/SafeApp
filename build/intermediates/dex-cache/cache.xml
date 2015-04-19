@@ -23,6 +23,13 @@
         <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/MyLockScreen/MyApp/app/build/intermediates/pre-dexed/debug/classes-045f7a9e0f4060a3ac9bb06125ab93cabe32ccf4.jar" />
     </item>
     <item
+        jar="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/exploded-aar/SafeApp/ffmpeg4android_lib/unspecified/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="7aa2e7297d7fb6a4ec499bcb6666257357314b5a">
+        <dex dex="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/pre-dexed/debug/classes-c9dd5218fdc24138a7163022b1b6e80bf5197a11.jar" />
+    </item>
+    <item
         jar="/Users/user/Documents/AndroidWorkSpace/TestWorkSpace/SafeApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.2/libs/internal_impl-21.0.2.jar"
         jumboMode="false"
         revision="21.1.2"

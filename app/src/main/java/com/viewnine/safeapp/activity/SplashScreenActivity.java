@@ -35,7 +35,7 @@ public class SplashScreenActivity extends Activity {
 //            SwitchViewManager.getInstance().gotoRecordForegroundVideoScreen(this);
 //        }
 
-
+        
         SwitchViewManager.getInstance().gotoLockScreen(this);
     }
 
